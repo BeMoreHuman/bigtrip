@@ -1,3 +1,5 @@
+const TRIP_EVENT = 3;
+
 const generateTripInfoTemplate = () => {
   return (
     `<section class="trip-main__trip-info  trip-info">
@@ -260,8 +262,25 @@ const createTripForm = () => {
   );
 };
 
+const generateTripEventContainer = () => {
+  return (
+    `<ul class="trip-days">
+      <li class="trip-days__item  day">
+        <div class="day__info">
+          <span class="day__counter">1</span>
+          <time class="day__date" datetime="2019-03-18">MAR 18</time>
+        </div>
+
+        <ul class="trip-events__list">
+          
+        </ul>
+      </li>
+    </ul>`
+  );
+};
+
 const generateTripEvent = () => {
-  retutn (
+  return (
     `<li class="trip-events__item">
       <div class="event">
         <div class="event__type">
@@ -299,6 +318,29 @@ const generateTripEvent = () => {
   );
 };
 
-const render = (container, template, place = 'beforeend') => {
+const render = (container, template, place = `beforeend`) => {
   container.insertAdjacentHTML(place, template);
 };
+
+const siteMainInfoElement = document.querySelector(`.trip-main`);
+const siteMainControlsElement = siteMainInfoElement.querySelector(`.trip-main__trip-controls`);
+const siteMenuSibling = siteMainControlsElement.querySelector(`h2`);
+
+render(siteMainInfoElement, generateTripInfoTemplate(), `afterbegin`);
+render(siteMenuSibling, generateTripMenuTemplate(), `afterend`);
+render(siteMainControlsElement, generateTripFiltersTemplate());
+
+const siteEventsContainer = document.querySelector(`.trip-events`);
+
+render(siteEventsContainer, generateTripSortTemplate());
+render(siteEventsContainer, generateTripEventContainer());
+
+const siteSortContainer = document.querySelector(`.trip-events__trip-sort`);
+const siteTripEventsList = document.querySelector(`.trip-events__list`);
+
+render(siteSortContainer, createTripForm(), `afterend`);
+
+
+for (let i = 0; i < TRIP_EVENT; i++) {
+  render(siteTripEventsList, generateTripEvent());
+}
